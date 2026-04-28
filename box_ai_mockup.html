@@ -1,0 +1,1795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Box AI — Content Intelligence Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --box-blue: #0061D5;
+  --box-blue-dark: #003F8A;
+  --box-blue-light: #E8F0FC;
+  --box-blue-mid: #4D8FE0;
+  --box-cyan: #00AEEF;
+  --box-green: #26C281;
+  --box-green-bg: #E6F8F1;
+  --box-amber: #F5A623;
+  --box-amber-bg: #FEF3DC;
+  --box-red: #E84040;
+  --box-red-bg: #FDEAEA;
+  --box-purple: #7B4FC4;
+  --box-purple-bg: #F0EBF9;
+  --bg: #F4F6FA;
+  --sidebar-bg: #1A1F36;
+  --sidebar-text: #8892B0;
+  --sidebar-active: #FFFFFF;
+  --card-bg: #FFFFFF;
+  --border: #E2E8F4;
+  --text-primary: #0F1829;
+  --text-secondary: #4A5568;
+  --text-tertiary: #8896AA;
+  --topbar-bg: #FFFFFF;
+  --font: 'DM Sans', sans-serif;
+  --mono: 'DM Mono', monospace;
+  --radius: 10px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.10), 0 2px 4px rgba(0,0,0,0.06);
+  --shadow-lg: 0 10px 30px rgba(0,0,0,0.12), 0 4px 8px rgba(0,0,0,0.06);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text-primary);
+  font-size: 13px;
+  line-height: 1.5;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── TOP BAR ──────────────────────────────────────────────── */
+.topbar {
+  height: 52px;
+  background: var(--topbar-bg);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 12px;
+  flex-shrink: 0;
+  z-index: 100;
+}
+
+.topbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: 8px;
+}
+
+.box-logo-icon {
+  width: 28px;
+  height: 28px;
+  background: var(--box-blue);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.5px;
+}
+
+.topbar-logo-text {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.3px;
+}
+
+.topbar-logo-text span {
+  color: var(--box-blue);
+}
+
+.topbar-divider {
+  width: 1px;
+  height: 20px;
+  background: var(--border);
+}
+
+.topbar-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-tertiary);
+}
+
+.topbar-breadcrumb .crumb-active {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.topbar-search {
+  flex: 1;
+  max-width: 380px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.topbar-search input {
+  width: 100%;
+  height: 32px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 0 14px 0 34px;
+  font-family: var(--font);
+  font-size: 12.5px;
+  color: var(--text-primary);
+  outline: none;
+}
+
+.topbar-search input::placeholder { color: var(--text-tertiary); }
+.topbar-search input:focus { border-color: var(--box-blue); background: #fff; }
+
+.search-icon {
+  position: absolute;
+  left: 11px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-tertiary);
+  font-size: 13px;
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.topbar-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: 30px;
+  padding: 0 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: var(--font);
+  cursor: pointer;
+  border: none;
+  transition: all 0.15s;
+}
+
+.topbar-btn.pri {
+  background: var(--box-blue);
+  color: #fff;
+}
+.topbar-btn.pri:hover { background: var(--box-blue-dark); }
+
+.topbar-btn.sec {
+  background: var(--bg);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+}
+.topbar-btn.sec:hover { background: #fff; }
+
+.ai-badge {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--box-blue) 0%, var(--box-cyan) 100%);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.ai-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #fff;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.85); }
+}
+
+.avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--box-blue);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* ── LAYOUT ───────────────────────────────────────────────── */
+.app-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* ── SIDEBAR ──────────────────────────────────────────────── */
+.sidebar {
+  width: 220px;
+  background: var(--sidebar-bg);
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding: 12px 0;
+}
+
+.sidebar-section-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #4A5568;
+  padding: 12px 16px 6px;
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 16px;
+  font-size: 12.5px;
+  color: var(--sidebar-text);
+  cursor: pointer;
+  border-radius: 0;
+  transition: all 0.12s;
+  position: relative;
+}
+
+.sidebar-item:hover { background: rgba(255,255,255,0.05); color: #C8D4E8; }
+
+.sidebar-item.active {
+  background: rgba(0,97,213,0.2);
+  color: var(--sidebar-active);
+}
+
+.sidebar-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--box-blue);
+  border-radius: 0 2px 2px 0;
+}
+
+.sidebar-icon {
+  width: 16px;
+  text-align: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.sidebar-badge {
+  margin-left: auto;
+  background: var(--box-blue);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 10px;
+  min-width: 18px;
+  text-align: center;
+}
+
+.sidebar-badge.amber { background: var(--box-amber); }
+.sidebar-badge.green { background: var(--box-green); }
+
+.sidebar-divider {
+  height: 1px;
+  background: rgba(255,255,255,0.07);
+  margin: 8px 0;
+}
+
+/* ── MAIN CONTENT ─────────────────────────────────────────── */
+.main {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+/* ── CENTER PANEL ─────────────────────────────────────────── */
+.center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-right: 1px solid var(--border);
+}
+
+.center-header {
+  padding: 16px 20px 12px;
+  border-bottom: 1px solid var(--border);
+  background: var(--card-bg);
+  flex-shrink: 0;
+}
+
+.center-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.page-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.3px;
+}
+
+.header-actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.filter-tabs {
+  display: flex;
+  gap: 2px;
+  background: var(--bg);
+  padding: 3px;
+  border-radius: 8px;
+}
+
+.filter-tab {
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: all 0.15s;
+  border: none;
+  background: none;
+  font-family: var(--font);
+}
+
+.filter-tab.active {
+  background: var(--card-bg);
+  color: var(--text-primary);
+  box-shadow: var(--shadow);
+}
+
+.stats-strip {
+  display: flex;
+  gap: 16px;
+}
+
+.stat-chip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.stat-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.center-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 16px;
+}
+
+/* ── DOC LIST ─────────────────────────────────────────────── */
+.doc-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.doc-row {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.doc-row:hover { border-color: var(--box-blue-mid); box-shadow: var(--shadow); }
+.doc-row.selected { border-color: var(--box-blue); background: var(--box-blue-light); box-shadow: 0 0 0 2px rgba(0,97,213,0.12); }
+
+.doc-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  flex-shrink: 0;
+}
+
+.doc-icon.pdf { background: #FDEAEA; }
+.doc-icon.docx { background: var(--box-blue-light); }
+.doc-icon.xlsx { background: var(--box-green-bg); }
+.doc-icon.pptx { background: #FEF0E6; }
+.doc-icon.img { background: var(--box-purple-bg); }
+
+.doc-info { flex: 1; min-width: 0; }
+
+.doc-name {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 2px;
+}
+
+.doc-meta {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.doc-ai-status {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+}
+
+.ai-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 10.5px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.ai-status-pill.auto { background: var(--box-green-bg); color: #1A7A54; }
+.ai-status-pill.review { background: var(--box-amber-bg); color: #8A5A00; }
+.ai-status-pill.pending { background: var(--bg); color: var(--text-tertiary); border: 1px solid var(--border); }
+.ai-status-pill.failed { background: var(--box-red-bg); color: #A02020; }
+.ai-status-pill.processing { background: var(--box-blue-light); color: var(--box-blue-dark); }
+
+.confidence-bar-wrap {
+  width: 60px;
+  flex-shrink: 0;
+}
+
+.confidence-label {
+  font-size: 9.5px;
+  color: var(--text-tertiary);
+  margin-bottom: 3px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.confidence-track {
+  height: 4px;
+  background: var(--bg);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.confidence-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 1s ease;
+}
+
+/* ── RIGHT PANEL ──────────────────────────────────────────── */
+.right-panel {
+  width: 360px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--card-bg);
+}
+
+.panel-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.panel-tab {
+  flex: 1;
+  padding: 11px 10px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.15s;
+  border: none;
+  background: none;
+  font-family: var(--font);
+}
+
+.panel-tab.active {
+  color: var(--box-blue);
+  border-bottom: 2px solid var(--box-blue);
+  background: var(--box-blue-light);
+}
+
+.panel-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ── DOCUMENT PREVIEW ─────────────────────────────────────── */
+.doc-preview-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.doc-preview-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 9px;
+  background: #FDEAEA;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.doc-preview-info { flex: 1; }
+
+.doc-preview-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.3;
+  margin-bottom: 3px;
+}
+
+.doc-preview-meta {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  line-height: 1.4;
+}
+
+/* ── AI CLASSIFICATION CARD ───────────────────────────────── */
+.ai-card {
+  background: linear-gradient(135deg, #0B1F52 0%, #0A3580 100%);
+  border-radius: var(--radius);
+  padding: 14px;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+
+.ai-card::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(0,174,239,0.15);
+}
+
+.ai-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.ai-card-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+}
+
+.ai-model-badge {
+  font-size: 9.5px;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 2px 7px;
+  border-radius: 10px;
+  color: rgba(255,255,255,0.8);
+  font-family: var(--mono);
+}
+
+.classification-result {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: #fff;
+}
+
+.classification-sub {
+  font-size: 11px;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 12px;
+}
+
+.confidence-section {
+  margin-bottom: 12px;
+}
+
+.confidence-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10.5px;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 5px;
+}
+
+.confidence-val { color: #fff; font-weight: 700; }
+
+.conf-track {
+  height: 6px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.conf-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #00AEEF, #26C281);
+  transition: width 1.5s cubic-bezier(.4,0,.2,1);
+}
+
+.conf-fill.amber { background: linear-gradient(90deg, #F5A623, #F5C323); }
+.conf-fill.red { background: linear-gradient(90deg, #E84040, #F56040); }
+
+.classification-tags {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.ctag {
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.8);
+  border: 1px solid rgba(255,255,255,0.15);
+}
+
+/* ── ACTION DECISION ──────────────────────────────────────── */
+.action-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.action-card-header {
+  padding: 10px 12px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.action-card-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.action-card-body { padding: 12px; }
+
+.decision-tree {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.decision-node {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: #fff;
+  transition: all 0.2s;
+}
+
+.decision-node.active {
+  border-color: var(--box-green);
+  background: var(--box-green-bg);
+}
+
+.decision-node.pending {
+  opacity: 0.5;
+}
+
+.decision-node.warn {
+  border-color: var(--box-amber);
+  background: var(--box-amber-bg);
+}
+
+.node-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.node-icon.green { background: var(--box-green-bg); }
+.node-icon.amber { background: var(--box-amber-bg); }
+.node-icon.blue { background: var(--box-blue-light); }
+.node-icon.gray { background: var(--bg); }
+
+.node-content { flex: 1; }
+.node-title { font-size: 12px; font-weight: 600; color: var(--text-primary); margin-bottom: 2px; }
+.node-desc { font-size: 11px; color: var(--text-secondary); line-height: 1.4; }
+
+.node-connector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 10px;
+  color: var(--text-tertiary);
+  padding: 2px 0;
+}
+
+.connector-line {
+  flex: 1;
+  height: 1px;
+  border-top: 1px dashed var(--border);
+  max-width: 20px;
+}
+
+/* ── WORKFLOW TRIGGER ─────────────────────────────────────── */
+.workflow-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.workflow-header {
+  padding: 10px 12px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.workflow-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.live-badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 9.5px;
+  font-weight: 600;
+  color: var(--box-green);
+}
+
+.live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--box-green);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.workflow-body { padding: 12px; }
+
+.workflow-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.wf-step {
+  display: flex;
+  gap: 10px;
+  position: relative;
+  padding-bottom: 16px;
+}
+
+.wf-step:last-child { padding-bottom: 0; }
+
+.wf-step-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.wf-step-dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+.wf-step-dot.done { background: var(--box-green); color: #fff; }
+.wf-step-dot.active { background: var(--box-blue); color: #fff; box-shadow: 0 0 0 3px rgba(0,97,213,0.2); }
+.wf-step-dot.pending { background: var(--bg); border: 1.5px solid var(--border); color: var(--text-tertiary); }
+.wf-step-dot.warn { background: var(--box-amber); color: #fff; }
+
+.wf-step-line {
+  width: 1.5px;
+  flex: 1;
+  background: var(--border);
+  margin: 3px 0;
+  min-height: 12px;
+}
+
+.wf-step-line.done { background: var(--box-green); }
+
+.wf-step-content { flex: 1; padding-top: 2px; }
+.wf-step-title { font-size: 12px; font-weight: 600; color: var(--text-primary); margin-bottom: 2px; }
+.wf-step-detail { font-size: 11px; color: var(--text-secondary); line-height: 1.4; }
+.wf-step-time { font-size: 10px; color: var(--text-tertiary); margin-top: 2px; font-family: var(--mono); }
+
+/* ── AUDIT LOG ────────────────────────────────────────────── */
+.audit-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.audit-header {
+  padding: 10px 12px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.audit-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.audit-body { padding: 10px 12px; }
+
+.audit-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 5px 0;
+  border-bottom: 1px solid var(--bg);
+  font-size: 11px;
+}
+
+.audit-row:last-child { border-bottom: none; }
+
+.audit-time {
+  color: var(--text-tertiary);
+  font-family: var(--mono);
+  width: 52px;
+  flex-shrink: 0;
+  font-size: 10px;
+  margin-top: 1px;
+}
+
+.audit-event { color: var(--text-secondary); flex: 1; line-height: 1.4; }
+.audit-event strong { color: var(--text-primary); }
+
+.audit-actor {
+  font-size: 9.5px;
+  padding: 1px 6px;
+  border-radius: 8px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.audit-actor.ai { background: var(--box-blue-light); color: var(--box-blue-dark); }
+.audit-actor.human { background: var(--box-purple-bg); color: var(--box-purple); }
+.audit-actor.system { background: var(--bg); color: var(--text-tertiary); border: 1px solid var(--border); }
+
+/* ── METRICS STRIP ────────────────────────────────────────── */
+.metrics-strip {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.metric-tile {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 10px 12px;
+}
+
+.metric-tile-val {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1;
+  margin-bottom: 3px;
+}
+
+.metric-tile-val.blue { color: var(--box-blue); }
+.metric-tile-val.green { color: var(--box-green); }
+.metric-tile-val.amber { color: var(--box-amber); }
+
+.metric-tile-label {
+  font-size: 10.5px;
+  color: var(--text-tertiary);
+  line-height: 1.3;
+}
+
+.metric-tile-trend {
+  font-size: 10px;
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+.metric-tile-trend.up { color: var(--box-green); }
+.metric-tile-trend.down { color: var(--box-red); }
+.metric-tile-trend.neutral { color: var(--text-tertiary); }
+
+/* ── BOTTOM STATUS ────────────────────────────────────────── */
+.status-bar {
+  height: 28px;
+  background: var(--sidebar-bg);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10.5px;
+  color: #6B7A99;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.status-dot.green { background: var(--box-green); }
+.status-dot.blue { background: var(--box-blue); animation: pulse 2s ease-in-out infinite; }
+.status-dot.amber { background: var(--box-amber); }
+
+/* ── SCROLLBAR ────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+/* ── ANIMATIONS ───────────────────────────────────────────── */
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.doc-row { animation: fadeSlideIn 0.3s ease both; }
+.doc-row:nth-child(1) { animation-delay: 0.05s; }
+.doc-row:nth-child(2) { animation-delay: 0.10s; }
+.doc-row:nth-child(3) { animation-delay: 0.15s; }
+.doc-row:nth-child(4) { animation-delay: 0.20s; }
+.doc-row:nth-child(5) { animation-delay: 0.25s; }
+.doc-row:nth-child(6) { animation-delay: 0.30s; }
+.doc-row:nth-child(7) { animation-delay: 0.35s; }
+
+.ai-card, .action-card, .workflow-card, .audit-card {
+  animation: fadeSlideIn 0.4s ease both;
+}
+
+.ai-card { animation-delay: 0.1s; }
+.action-card { animation-delay: 0.2s; }
+.workflow-card { animation-delay: 0.3s; }
+.audit-card { animation-delay: 0.4s; }
+
+/* ── HUMAN REVIEW MODAL ───────────────────────────────────── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15,24,41,0.55);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+}
+
+.modal-overlay.show { display: flex; }
+
+.modal {
+  background: var(--card-bg);
+  border-radius: 14px;
+  width: 480px;
+  max-width: 95vw;
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  animation: fadeSlideIn 0.25s ease;
+}
+
+.modal-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+.modal-close { cursor: pointer; color: var(--text-tertiary); font-size: 18px; background: none; border: none; }
+
+.modal-body { padding: 20px; }
+
+.modal-doc-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px;
+  background: var(--bg);
+  border-radius: 9px;
+  margin-bottom: 16px;
+}
+
+.modal-doc-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: #FDEAEA;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.modal-doc-name { font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 3px; }
+.modal-doc-meta { font-size: 11px; color: var(--text-tertiary); }
+
+.modal-classification {
+  margin-bottom: 14px;
+}
+
+.modal-section-label {
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-tertiary);
+  margin-bottom: 8px;
+}
+
+.modal-conf-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.modal-conf-label { font-size: 12px; color: var(--text-secondary); width: 130px; flex-shrink: 0; }
+
+.modal-conf-track {
+  flex: 1;
+  height: 6px;
+  background: var(--bg);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.modal-conf-fill {
+  height: 100%;
+  border-radius: 3px;
+}
+
+.modal-conf-val { font-size: 12px; font-weight: 600; color: var(--text-primary); width: 34px; text-align: right; }
+
+.modal-actions-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.modal-action-btn {
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--font);
+  cursor: pointer;
+  border: 1.5px solid;
+  text-align: center;
+  transition: all 0.15s;
+}
+
+.modal-action-btn.approve {
+  background: var(--box-green-bg);
+  border-color: var(--box-green);
+  color: #1A7A54;
+}
+
+.modal-action-btn.approve:hover { background: #C8F0E0; }
+
+.modal-action-btn.override {
+  background: var(--box-amber-bg);
+  border-color: var(--box-amber);
+  color: #8A5A00;
+}
+
+.modal-action-btn.override:hover { background: #FAE4B0; }
+
+.modal-action-btn.reject {
+  background: var(--box-red-bg);
+  border-color: var(--box-red);
+  color: #A02020;
+}
+
+.modal-action-btn.reject:hover { background: #FACBCB; }
+
+.modal-action-btn.escalate {
+  background: var(--box-purple-bg);
+  border-color: var(--box-purple);
+  color: var(--box-purple);
+}
+
+.modal-action-btn.escalate:hover { background: #E0D4F5; }
+
+.modal-footer {
+  padding: 12px 20px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg);
+}
+
+.modal-footer-note { font-size: 10.5px; color: var(--text-tertiary); }
+.modal-footer-note strong { color: var(--text-secondary); }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-logo">
+    <div class="box-logo-icon">b</div>
+    <div class="topbar-logo-text">box <span>AI</span></div>
+  </div>
+  <div class="topbar-divider"></div>
+  <div class="topbar-breadcrumb">
+    <span>Enterprise Content</span>
+    <span style="color:var(--border)">›</span>
+    <span>AstraZeneca</span>
+    <span style="color:var(--border)">›</span>
+    <span class="crumb-active">Contract Intelligence</span>
+  </div>
+  <div class="topbar-search">
+    <span class="search-icon">⌕</span>
+    <input type="text" placeholder="Search files, classifications, actions...">
+  </div>
+  <div class="topbar-actions">
+    <div class="ai-badge"><div class="ai-dot"></div> AI Active</div>
+    <button class="topbar-btn sec">⚙ Settings</button>
+    <button class="topbar-btn pri" onclick="document.getElementById('reviewModal').classList.add('show')">Review Queue <span style="background:rgba(255,255,255,0.25);padding:1px 5px;border-radius:8px;margin-left:2px;font-size:10px">3</span></button>
+    <div class="avatar">ST</div>
+  </div>
+</div>
+
+<!-- BODY -->
+<div class="app-body">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-section-label">Workspace</div>
+    <div class="sidebar-item active"><span class="sidebar-icon">⬡</span> Content Intelligence</div>
+    <div class="sidebar-item"><span class="sidebar-icon">◈</span> All Files <span class="sidebar-badge">1,284</span></div>
+    <div class="sidebar-item"><span class="sidebar-icon">⚡</span> AI Workflows <span class="sidebar-badge green">12</span></div>
+    <div class="sidebar-item"><span class="sidebar-icon">⚑</span> Review Queue <span class="sidebar-badge amber">3</span></div>
+
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section-label">Content Types</div>
+    <div class="sidebar-item"><span class="sidebar-icon">📄</span> Contracts</div>
+    <div class="sidebar-item"><span class="sidebar-icon">💰</span> Invoices</div>
+    <div class="sidebar-item"><span class="sidebar-icon">👤</span> Employee Records</div>
+    <div class="sidebar-item"><span class="sidebar-icon">📊</span> Financials</div>
+    <div class="sidebar-item"><span class="sidebar-icon">⚗</span> Product Specs</div>
+
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section-label">AI Model</div>
+    <div class="sidebar-item"><span class="sidebar-icon">◉</span> Model Health</div>
+    <div class="sidebar-item"><span class="sidebar-icon">↻</span> Lifecycle</div>
+    <div class="sidebar-item"><span class="sidebar-icon">⊞</span> Evaluations</div>
+    <div class="sidebar-item"><span class="sidebar-icon">🔒</span> Governance</div>
+
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section-label">Settings</div>
+    <div class="sidebar-item"><span class="sidebar-icon">◎</span> Confidence Thresholds</div>
+    <div class="sidebar-item"><span class="sidebar-icon">⊕</span> Integrations</div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- CENTER: DOCUMENT LIST -->
+    <div class="center">
+      <div class="center-header">
+        <div class="center-header-top">
+          <div class="page-title">Contract Intelligence — Live Pipeline</div>
+          <div class="header-actions">
+            <button class="topbar-btn sec" style="font-size:11px;height:28px;padding:0 10px">↑ Upload</button>
+            <button class="topbar-btn sec" style="font-size:11px;height:28px;padding:0 10px">⊞ Filter</button>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <div class="filter-tabs">
+            <button class="filter-tab active">All Files</button>
+            <button class="filter-tab">Auto-Actioned</button>
+            <button class="filter-tab">In Review</button>
+            <button class="filter-tab">Flagged</button>
+          </div>
+          <div class="stats-strip">
+            <div class="stat-chip"><div class="stat-dot" style="background:var(--box-green)"></div>Auto-actioned: 847</div>
+            <div class="stat-chip"><div class="stat-dot" style="background:var(--box-amber)"></div>In review: 3</div>
+            <div class="stat-chip"><div class="stat-dot" style="background:var(--box-red)"></div>Failed: 1</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="center-content">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;padding:0 2px">
+          <div style="font-size:11px;font-weight:600;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.06em">DOCUMENT</div>
+          <div style="flex:1"></div>
+          <div style="font-size:11px;font-weight:600;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.06em;width:120px;text-align:center">AI STATUS</div>
+          <div style="font-size:11px;font-weight:600;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.06em;width:80px;text-align:center">CONFIDENCE</div>
+        </div>
+
+        <div class="doc-list">
+
+          <div class="doc-row selected" onclick="selectDoc(this)">
+            <div class="doc-icon pdf">📄</div>
+            <div class="doc-info">
+              <div class="doc-name">AstraZeneca_MasterServiceAgreement_Q2_2026.pdf</div>
+              <div class="doc-meta">
+                <span>PDF · 2.4 MB</span><span>·</span>
+                <span>Modified 2h ago</span><span>·</span>
+                <span style="color:var(--box-amber);font-weight:500">⚠ Needs Review</span>
+              </div>
+            </div>
+            <div class="doc-ai-status">
+              <div class="ai-status-pill review">⚑ Human Review</div>
+            </div>
+            <div class="confidence-bar-wrap">
+              <div class="confidence-label"><span>Conf.</span><span style="font-weight:600;color:var(--box-amber)">62%</span></div>
+              <div class="confidence-track"><div class="confidence-fill" style="width:62%;background:var(--box-amber)"></div></div>
+            </div>
+          </div>
+
+          <div class="doc-row" onclick="selectDoc(this)">
+            <div class="doc-icon pdf">📄</div>
+            <div class="doc-info">
+              <div class="doc-name">Vendor_NDA_Pfizer_Confidential_2026.pdf</div>
+              <div class="doc-meta"><span>PDF · 890 KB</span><span>·</span><span>Modified 4h ago</span></div>
+            </div>
+            <div class="doc-ai-status">
+              <div class="ai-status-pill auto">✓ Auto-Actioned</div>
+            </div>
+            <div class="confidence-bar-wrap">
+              <div class="confidence-label"><span>Conf.</span><span style="font-weight:600;color:var(--box-green)">94%</span></div>
+              <div class="confidence-track"><div class="confidence-fill" style="width:94%;background:var(--box-green)"></div></div>
+            </div>
+          </div>
+
+          <div class="doc-row" onclick="selectDoc(this)">
+            <div class="doc-icon xlsx">📊</div>
+            <div class="doc-info">
+              <div class="doc-name">Q1_2026_Financial_Statements_Consolidated.xlsx</div>
+              <div class="doc-meta"><span>XLSX · 1.1 MB</span><span>·</span><span>Modified 6h ago</span></div>
+            </div>
+            <div class="doc-ai-status">
+              <div class="ai-status-pill auto">✓ Auto-Actioned</div>
+            </div>
+            <div class="confidence-bar-wrap">
+              <div class="confidence-label"><span>Conf.</span><span style="font-weight:600;color:var(--box-green)">91%</span></div>
+              <div class="confidence-track"><div class="confidence-fill" style="width:91%;background:var(--box-green)"></div></div>
+            </div>
+          </div>
+
+          <div class="doc-row" onclick="selectDoc(this)">
+            <div class="doc-icon docx">📝</div>
+            <div class="doc-info">
+              <div class="doc-name">Employee_Handbook_v4_Updated_Compliance.docx</div>
+              <div class="doc-meta"><span>DOCX · 3.2 MB</span><span>·</span><span>Modified Yesterday</span></div>
+            </div>
+            <div class="doc-ai-status">
+              <div class="ai-status-pill review">⚑ Human Review</div>
+            </div>
+            <div class="confidence-bar-wrap">
+              <div class="confidence-label"><span>Conf.</span><span style="font-weight:600;color:var(--box-amber)">58%</span></div>
+              <div class="confidence-track"><div class="confidence-fill" style="width:58%;background:var(--box-amber)"></div></div>
+            </div>
+          </div>
+
+          <div class="doc-row" onclick="selectDoc(this)">
+            <div class="doc-icon pdf">📄</div>
+            <div class="doc-info">
+              <div class="doc-name">IP_License_Agreement_JohnsonJohnson_2026.pdf</div>
+              <div class="doc-meta"><span>PDF · 1.7 MB</span><span>·</span><span>Modified Yesterday</span></div>
+            </div>
+            <div class="doc-ai-status">
+              <div class="ai-status-pill auto">✓ Auto-Actioned</div>
+            </div>
+            <div class="confidence-bar-wrap">
+              <div class="confidence-label"><span>Conf.</span><span style="font-weight:600;color:var(--box-green)">88%</span></div>
+              <div class="confidence-track"><div class="confidence-fill" style="width:88%;background:var(--box-green)"></div></div>
+            </div>
+          </div>
+
+          <div class="doc-row" onclick="selectDoc(this)">
+            <div class="doc-icon pptx">📑</div>
+            <div class="doc-info">
+              <div class="doc-name">Product_Roadmap_H2_2026_Confidential.pptx</div>
+              <div class="doc-meta"><span>PPTX · 8.4 MB</span><span>·</span><span>Modified 2d ago</span></div>
+            </div>
+            <div class="doc-ai-status">
+              <div class="ai-status-pill processing">⟳ Processing</div>
+            </div>
+            <div class="confidence-bar-wrap">
+              <div class="confidence-label"><span>Conf.</span><span style="font-weight:600;color:var(--box-blue)">—</span></div>
+              <div class="confidence-track"><div class="confidence-fill" style="width:0%;background:var(--box-blue)"></div></div>
+            </div>
+          </div>
+
+          <div class="doc-row" onclick="selectDoc(this)">
+            <div class="doc-icon pdf">📄</div>
+            <div class="doc-info">
+              <div class="doc-name">Supplier_Invoice_Batch_March_2026_547docs.pdf</div>
+              <div class="doc-meta"><span>PDF · 12.8 MB</span><span>·</span><span>Modified 3d ago</span><span>·</span><span style="color:var(--box-red);font-weight:500">✗ Classification Failed</span></div>
+            </div>
+            <div class="doc-ai-status">
+              <div class="ai-status-pill failed">✗ Failed</div>
+            </div>
+            <div class="confidence-bar-wrap">
+              <div class="confidence-label"><span>Conf.</span><span style="font-weight:600;color:var(--box-red)">12%</span></div>
+              <div class="confidence-track"><div class="confidence-fill" style="width:12%;background:var(--box-red)"></div></div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- METRICS STRIP -->
+        <div style="margin-top:16px">
+          <div style="font-size:11px;font-weight:600;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Model Performance — Last 30 Days</div>
+          <div class="metrics-strip">
+            <div class="metric-tile">
+              <div class="metric-tile-val green">94.2%</div>
+              <div class="metric-tile-label">Avg. classification accuracy</div>
+              <div class="metric-tile-trend up">↑ +2.1% vs last cycle</div>
+            </div>
+            <div class="metric-tile">
+              <div class="metric-tile-val blue">847</div>
+              <div class="metric-tile-label">Docs auto-actioned (no human)</div>
+              <div class="metric-tile-trend up">↑ +34% vs last month</div>
+            </div>
+            <div class="metric-tile">
+              <div class="metric-tile-val" style="color:var(--text-primary)">4.2s</div>
+              <div class="metric-tile-label">Avg. time-to-action per doc</div>
+              <div class="metric-tile-trend up">↓ 61% faster than manual</div>
+            </div>
+            <div class="metric-tile">
+              <div class="metric-tile-val amber">3</div>
+              <div class="metric-tile-label">Docs escalated for human review</div>
+              <div class="metric-tile-trend neutral">↔ Threshold: conf. &lt; 70%</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL: AI INTELLIGENCE -->
+    <div class="right-panel">
+      <div class="panel-tabs">
+        <button class="panel-tab active">AI Analysis</button>
+        <button class="panel-tab">Workflow</button>
+        <button class="panel-tab">Audit Log</button>
+      </div>
+
+      <div class="panel-content">
+
+        <!-- DOC PREVIEW -->
+        <div class="doc-preview-header">
+          <div class="doc-preview-icon">📄</div>
+          <div class="doc-preview-info">
+            <div class="doc-preview-name">AstraZeneca_MasterServiceAgreement_Q2_2026.pdf</div>
+            <div class="doc-preview-meta">PDF · 2.4 MB · Uploaded by Sarah Chen · 2h ago<br>Box AI v3.2 · Model: box-llm-enterprise-v2</div>
+          </div>
+        </div>
+
+        <!-- AI CLASSIFICATION CARD -->
+        <div class="ai-card">
+          <div class="ai-card-header">
+            <span class="ai-card-label">AI Classification Result</span>
+            <span class="ai-model-badge">box-llm-v2</span>
+          </div>
+          <div class="classification-result">Master Service Agreement</div>
+          <div class="classification-sub">Enterprise contract · Multi-party · Renewal clause detected</div>
+
+          <div class="confidence-section">
+            <div class="confidence-header">
+              <span>Confidence Score</span>
+              <span class="confidence-val">62%</span>
+            </div>
+            <div class="conf-track">
+              <div class="conf-fill amber" style="width:62%"></div>
+            </div>
+            <div style="font-size:10px;color:rgba(255,255,255,0.5);margin-top:3px">Below 70% threshold → Escalated to human review</div>
+          </div>
+
+          <div class="classification-tags">
+            <span class="ctag">Confidential</span>
+            <span class="ctag">Multi-year</span>
+            <span class="ctag">Auto-renewal</span>
+            <span class="ctag">Legal review req.</span>
+            <span class="ctag">High value</span>
+          </div>
+        </div>
+
+        <!-- ACTION DECISION CARD -->
+        <div class="action-card">
+          <div class="action-card-header">
+            <span class="action-card-title">Action Decision Engine</span>
+            <span style="font-size:10px;color:var(--box-amber);font-weight:600">⚑ Review Required</span>
+          </div>
+          <div class="action-card-body">
+            <div class="decision-tree">
+              <div class="decision-node active">
+                <div class="node-icon green">✓</div>
+                <div class="node-content">
+                  <div class="node-title">Classification complete</div>
+                  <div class="node-desc">Identified as MSA with 62% confidence. Metadata extracted: 47 clauses, 3 parties, expiry date 2028-06-30.</div>
+                </div>
+              </div>
+
+              <div class="node-connector">
+                <div class="connector-line"></div>
+                <span>confidence &lt; 70%</span>
+                <div class="connector-line"></div>
+              </div>
+
+              <div class="decision-node warn">
+                <div class="node-icon amber">⚑</div>
+                <div class="node-content">
+                  <div class="node-title">Escalated to human review</div>
+                  <div class="node-desc">Auto-action paused. Routed to Legal Ops team. SLA: 4 hours. Notified: Sarah Chen, Mark Alvarez.</div>
+                </div>
+              </div>
+
+              <div class="node-connector">
+                <div class="connector-line"></div>
+                <span>on approval</span>
+                <div class="connector-line"></div>
+              </div>
+
+              <div class="decision-node pending">
+                <div class="node-icon blue">→</div>
+                <div class="node-content">
+                  <div class="node-title">Route to Legal Ops workflow</div>
+                  <div class="node-desc">Tag, version-lock, notify counsel, add to renewal tracker, archive with retention policy: 7 years.</div>
+                </div>
+              </div>
+
+              <div class="node-connector">
+                <div class="connector-line"></div>
+                <span>post-routing</span>
+                <div class="connector-line"></div>
+              </div>
+
+              <div class="decision-node pending">
+                <div class="node-icon gray">⊞</div>
+                <div class="node-content">
+                  <div class="node-title">Write audit record + compliance log</div>
+                  <div class="node-desc">Immutable record: classification, confidence score, reviewer identity, timestamp, action taken.</div>
+                </div>
+              </div>
+            </div>
+
+            <button class="topbar-btn pri" style="width:100%;margin-top:12px;height:34px;font-size:12px;justify-content:center" onclick="document.getElementById('reviewModal').classList.add('show')">
+              Open Review Panel →
+            </button>
+          </div>
+        </div>
+
+        <!-- WORKFLOW STEPS -->
+        <div class="workflow-card">
+          <div class="workflow-header">
+            <span class="workflow-title">Live Workflow Trace</span>
+            <div class="live-badge"><div class="live-dot"></div>Live</div>
+          </div>
+          <div class="workflow-body">
+            <div class="workflow-steps">
+
+              <div class="wf-step">
+                <div class="wf-step-left">
+                  <div class="wf-step-dot done">✓</div>
+                  <div class="wf-step-line done"></div>
+                </div>
+                <div class="wf-step-content">
+                  <div class="wf-step-title">File ingested</div>
+                  <div class="wf-step-detail">PDF parsed, OCR applied, 47 pages extracted, metadata indexed.</div>
+                  <div class="wf-step-time">14:22:08 UTC</div>
+                </div>
+              </div>
+
+              <div class="wf-step">
+                <div class="wf-step-left">
+                  <div class="wf-step-dot done">✓</div>
+                  <div class="wf-step-line done"></div>
+                </div>
+                <div class="wf-step-content">
+                  <div class="wf-step-title">LLM classification run</div>
+                  <div class="wf-step-detail">box-llm-enterprise-v2 · 3 classification passes · 62% confidence returned.</div>
+                  <div class="wf-step-time">14:22:12 UTC · 3.8s</div>
+                </div>
+              </div>
+
+              <div class="wf-step">
+                <div class="wf-step-left">
+                  <div class="wf-step-dot warn">⚑</div>
+                  <div class="wf-step-line"></div>
+                </div>
+                <div class="wf-step-content">
+                  <div class="wf-step-title">Confidence below threshold</div>
+                  <div class="wf-step-detail">62% &lt; 70% rule triggered. Auto-action paused. Human review gate opened.</div>
+                  <div class="wf-step-time">14:22:12 UTC</div>
+                </div>
+              </div>
+
+              <div class="wf-step">
+                <div class="wf-step-left">
+                  <div class="wf-step-dot active">⟳</div>
+                  <div class="wf-step-line"></div>
+                </div>
+                <div class="wf-step-content">
+                  <div class="wf-step-title">Awaiting human review</div>
+                  <div class="wf-step-detail">Notified: Sarah Chen (Legal Ops). SLA 4h. 2h 14m remaining.</div>
+                  <div class="wf-step-time" style="color:var(--box-amber)">In progress · 14:22:13 UTC</div>
+                </div>
+              </div>
+
+              <div class="wf-step">
+                <div class="wf-step-left">
+                  <div class="wf-step-dot pending">4</div>
+                  <div class="wf-step-line"></div>
+                </div>
+                <div class="wf-step-content">
+                  <div class="wf-step-title">Route to Legal Ops</div>
+                  <div class="wf-step-detail">Tag · Version-lock · Notify counsel · Add to renewal tracker</div>
+                  <div class="wf-step-time" style="color:var(--text-tertiary)">Pending</div>
+                </div>
+              </div>
+
+              <div class="wf-step">
+                <div class="wf-step-left">
+                  <div class="wf-step-dot pending">5</div>
+                </div>
+                <div class="wf-step-content">
+                  <div class="wf-step-title">Write compliance audit record</div>
+                  <div class="wf-step-detail">Immutable log: action, reviewer, timestamp, confidence, model version.</div>
+                  <div class="wf-step-time" style="color:var(--text-tertiary)">Pending</div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- AUDIT LOG -->
+        <div class="audit-card">
+          <div class="audit-header">
+            <span class="audit-title">Audit Trail</span>
+            <span style="font-size:10px;color:var(--text-tertiary)">Immutable · GDPR compliant</span>
+          </div>
+          <div class="audit-body">
+            <div class="audit-row">
+              <div class="audit-time">14:22:13</div>
+              <div class="audit-event"><strong>Human review gate opened</strong> — confidence 62%, below 70% threshold</div>
+              <div class="audit-actor ai">AI</div>
+            </div>
+            <div class="audit-row">
+              <div class="audit-time">14:22:12</div>
+              <div class="audit-event">Classification: <strong>Master Service Agreement</strong> · 62% confidence · box-llm-v2</div>
+              <div class="audit-actor ai">AI</div>
+            </div>
+            <div class="audit-row">
+              <div class="audit-time">14:22:08</div>
+              <div class="audit-event">File ingested · OCR applied · <strong>47 pages</strong> indexed</div>
+              <div class="audit-actor system">SYS</div>
+            </div>
+            <div class="audit-row">
+              <div class="audit-time">14:20:01</div>
+              <div class="audit-event">File uploaded by <strong>Sarah Chen</strong> · Legal Ops team</div>
+              <div class="audit-actor human">Human</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STATUS BAR -->
+<div class="status-bar">
+  <div class="status-item"><div class="status-dot green"></div>Model healthy · Last retrain: 6d ago · Accuracy: 94.2%</div>
+  <div class="status-item"><div class="status-dot blue"></div>1 file processing</div>
+  <div class="status-item"><div class="status-dot amber"></div>3 pending reviews</div>
+  <div style="margin-left:auto;font-size:10.5px;color:#6B7A99;font-family:var(--mono)">box-llm-enterprise-v2 · Workspace: AstraZeneca · Region: US-West</div>
+</div>
+
+<!-- HUMAN REVIEW MODAL -->
+<div class="modal-overlay" id="reviewModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">⚑ Human Review — Confidence Below Threshold</div>
+      <button class="modal-close" onclick="document.getElementById('reviewModal').classList.remove('show')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-doc-info">
+        <div class="modal-doc-icon">📄</div>
+        <div>
+          <div class="modal-doc-name">AstraZeneca_MasterServiceAgreement_Q2_2026.pdf</div>
+          <div class="modal-doc-meta">PDF · 2.4 MB · Uploaded by Sarah Chen · 14:20 UTC · box-llm-enterprise-v2</div>
+        </div>
+      </div>
+
+      <div class="modal-classification">
+        <div class="modal-section-label">Classification Scores</div>
+        <div class="modal-conf-row">
+          <div class="modal-conf-label">Master Service Agreement</div>
+          <div class="modal-conf-track"><div class="modal-conf-fill" style="width:62%;background:var(--box-amber);height:100%"></div></div>
+          <div class="modal-conf-val" style="color:var(--box-amber)">62%</div>
+        </div>
+        <div class="modal-conf-row">
+          <div class="modal-conf-label">Vendor Agreement</div>
+          <div class="modal-conf-track"><div class="modal-conf-fill" style="width:24%;background:var(--box-blue);height:100%"></div></div>
+          <div class="modal-conf-val" style="color:var(--box-blue)">24%</div>
+        </div>
+        <div class="modal-conf-row">
+          <div class="modal-conf-label">Partnership Agreement</div>
+          <div class="modal-conf-track"><div class="modal-conf-fill" style="width:14%;background:var(--border);height:100%"></div></div>
+          <div class="modal-conf-val" style="color:var(--text-tertiary)">14%</div>
+        </div>
+      </div>
+
+      <div style="margin-bottom:14px">
+        <div class="modal-section-label">AI Reasoning</div>
+        <div style="background:var(--bg);border-radius:8px;padding:10px 12px;font-size:11.5px;color:var(--text-secondary);line-height:1.6;font-family:var(--mono)">
+          "Document contains mutual obligations, SLA terms, and IP clauses consistent with MSA. However, Exhibit B references a specific product SOW that may reclassify this as a Vendor Agreement. Ambiguity in clause 7.3 and 12.1 reduces confidence below threshold."
+        </div>
+      </div>
+
+      <div class="modal-section-label">Your Decision</div>
+      <div class="modal-actions-row">
+        <button class="modal-action-btn approve" onclick="document.getElementById('reviewModal').classList.remove('show')">✓ Approve as MSA</button>
+        <button class="modal-action-btn override" onclick="document.getElementById('reviewModal').classList.remove('show')">⟳ Override Classification</button>
+        <button class="modal-action-btn reject" onclick="document.getElementById('reviewModal').classList.remove('show')">✗ Reject — Send Back</button>
+        <button class="modal-action-btn escalate" onclick="document.getElementById('reviewModal').classList.remove('show')">↑ Escalate to Legal</button>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="modal-footer-note">Your decision will be logged immutably. <strong>Reviewer: ST</strong> · <strong>SLA: 1h 46m remaining</strong></div>
+      <button class="topbar-btn sec" style="height:28px;font-size:11px" onclick="document.getElementById('reviewModal').classList.remove('show')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function selectDoc(el) {
+  document.querySelectorAll('.doc-row').forEach(r => r.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+// Animate confidence bars on load
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.querySelectorAll('.confidence-fill').forEach(el => {
+      const w = el.style.width;
+      el.style.width = '0%';
+      setTimeout(() => { el.style.width = w; }, 100);
+    });
+    document.querySelectorAll('.conf-fill').forEach(el => {
+      const w = el.style.width;
+      el.style.width = '0%';
+      setTimeout(() => { el.style.width = w; }, 200);
+    });
+  }, 300);
+});
+
+// Processing animation
+let pct = 0;
+const procRow = document.querySelectorAll('.doc-row')[4];
+const procFill = procRow.querySelector('.confidence-fill');
+setInterval(() => {
+  if (pct < 85) {
+    pct += Math.random() * 3;
+    procFill.style.width = Math.min(pct, 85) + '%';
+    procFill.style.background = 'var(--box-blue)';
+  }
+}, 400);
+</script>
+</body>
+</html>
